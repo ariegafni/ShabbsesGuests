@@ -4,10 +4,10 @@ location_api = Blueprint('location_api', __name__)
 
 # Mock data for countries and cities
 COUNTRIES = [
-    {"place_id": "IL", "name": "Israel", "host_count": 15},
-    {"place_id": "USA", "name": "United States", "host_count": 8},
-    {"place_id": "BR", "name": "Brazil", "host_count": 3},
-    {"place_id": "FC", "name": "France", "host_count": 5}
+    {"place_id": "IL", "name": "Israel"},
+    {"place_id": "USA", "name": "United States"},
+    {"place_id": "BR", "name": "Brazil"},
+    {"place_id": "FC", "name": "France"}
 ]
 
 CITIES = [
@@ -25,10 +25,8 @@ CITIES = [
 def get_countries():
     """Get all countries"""
     try:
-        print(f"DEBUG: Returning {len(COUNTRIES)} countries: {COUNTRIES}")
         return jsonify(COUNTRIES)
     except Exception as e:
-        print(f"ERROR: Failed to fetch countries: {e}")
         return jsonify({"error": "Failed to fetch countries"}), 500
 
 
