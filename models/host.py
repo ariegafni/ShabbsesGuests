@@ -81,6 +81,9 @@ class UpdateHostRequest(BaseModel):
     available: Optional[bool] = None
     photo_url: Optional[str] = None
 
+    class Config:
+        from_attributes = True
+
 
 class UploadPhotoResponse(BaseModel):
     photo_url: str

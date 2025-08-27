@@ -10,33 +10,40 @@ from typing import List
 class HostRepository:
     def add(self, host: Host) -> str:
         conn = get_connection()
-        cur = conn.cursor()
-        
-        # Generate UUID for host ID
-        host_id = str(uuid.uuid4())
-        now = datetime.utcnow()
-        
-        cur.execute("""
-            INSERT INTO hosts (
-                id, user_id, country_place_id, city_place_id, area, address,
-                description, bio, max_guests, hosting_type, kashrut_level,
-                languages, total_hostings, is_always_available, available,
-                photo_url, created_at, updated_at
-            )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) 
-            RETURNING id;
-        """, (
-            host_id, host.user_id, host.country_place_id, host.city_place_id,
-            host.area, host.address, host.description, host.bio, host.max_guests,
-            host.hosting_type, host.kashrut_level, host.languages,
-            host.total_hostings, host.is_always_available, host.available,
-            host.photo_url, now, now
-        ))
-        
-        conn.commit()
-        cur.close()
-        conn.close()
-        return host_id
+        try:
+            with conn:  # טרנזקציה אטומית (commit/rollback אוטומטי)
+                with conn.cursor() as cur:
+                    host_id = str(uuid.uuid4())
+                    now = datetime.utcnow()
+
+                    # מבטיחים קיום מדינה בטבלת countries (אם קיימת – מתעלמים)
+                    cur.execute("""
+                        INSERT INTO countries (country_place_id, created_at, updated_at)
+                        VALUES (%s, %s, %s)
+                        ON CONFLICT (country_place_id) DO NOTHING;
+                    """, (host.country_place_id, now, now))
+
+                    # הכנסת המארח
+                    cur.execute("""
+                        INSERT INTO hosts (
+                            id, user_id, country_place_id, city_place_id, area, address,
+                            description, bio, max_guests, hosting_type, kashrut_level,
+                            languages, total_hostings, is_always_available, available,
+                            photo_url, created_at, updated_at
+                        )
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        RETURNING id;
+                    """, (
+                        host_id, host.user_id, host.country_place_id, host.city_place_id,
+                        host.area, host.address, host.description, host.bio, host.max_guests,
+                        host.hosting_type, host.kashrut_level, host.languages,
+                        host.total_hostings, host.is_always_available, host.available,
+                        host.photo_url, now, now
+                    ))
+                    return cur.fetchone()[0]
+        finally:
+            conn.close()
+
 
     def get_by_id(self, host_id: str) -> HostResponse | None:
         conn = get_connection()

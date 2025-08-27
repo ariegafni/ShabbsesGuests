@@ -1,3 +1,10 @@
-venv/
-.env/
-.idea/
+@"
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+*.log
+.env
+.env.*
+"@ | Out-File -Encoding utf8 .gitignore
+git add .gitignore

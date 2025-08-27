@@ -3,7 +3,6 @@ from flask_cors import CORS
 from routes.user_api import user_api
 from routes.host_api import host_api
 from routes.auth_api import auth_api
-from routes.location_api import location_api
 
 
 def create_app():
@@ -14,11 +13,10 @@ def create_app():
     app.register_blueprint(auth_api, url_prefix="/api")
     app.register_blueprint(user_api, url_prefix="/api")
     app.register_blueprint(host_api, url_prefix="/api")
-    app.register_blueprint(location_api, url_prefix="/api")
 
     return app
 
 
 if __name__ == "__main__":
     app = create_app()
-    app.run(debug=True, host="0.0.0.0", port=3002)
+    app.run(debug=True, host="0.0.0.0", port=3005)

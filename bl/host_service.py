@@ -2,13 +2,34 @@
 from models.host import Host, HostResponse, CreateHostRequest, UpdateHostRequest, UploadPhotoResponse
 from dal.repository.host_repository import HostRepository
 from typing import List, Optional
+import requests
 
 
 class HostService:
     def __init__(self):
         self.repo = HostRepository()
 
+    def _ensure_country_exists(self, country_place_id: str) -> None:
+        """Ensure country exists in the countries list, add if it doesn't"""
+        try:
+            # Check if country exists
+            response = requests.get(f"http://localhost:5000/api/locations/countries/{country_place_id}")
+            if response.status_code == 404:
+                # Country doesn't exist, add it
+                add_response = requests.post(
+                    "http://localhost:5000/api/locations/countries",
+                    json={"place_id": country_place_id}
+                )
+                if add_response.status_code != 201:
+                    print(f"Warning: Failed to add country {country_place_id}")
+        except Exception as e:
+            print(f"Warning: Failed to ensure country exists: {e}")
+            # Don't fail the host creation if this fails
+
     def create_host(self, user_id: str, host_data: CreateHostRequest) -> HostResponse:
+        # Ensure country exists before creating host
+        self._ensure_country_exists(host_data.country_place_id)
+        
         # Check if user already has a host profile
         if self.repo.user_has_host_profile(user_id):
             raise ValueError("User already has a host profile")
