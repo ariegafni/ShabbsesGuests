@@ -1,16 +1,18 @@
 from datetime import datetime, timedelta, timezone
 import os
 from typing import Any, Dict, Optional, Tuple
+import uuid
 
 import jwt
 from flask import Request, g
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 def _get_jwt_secret() -> str:
     return os.environ.get("JWT_SECRET", "dev_secret_change_me")
 
 
-def create_access_and_refresh_tokens(user_id: int, extra_claims: Optional[Dict[str, Any]] = None) -> Tuple[str, str]:
+def create_access_and_refresh_tokens(user_id: str, extra_claims: Optional[Dict[str, Any]] = None) -> Tuple[str, str]:
     now = datetime.now(tz=timezone.utc)
     payload_common: Dict[str, Any] = {
         "sub": str(user_id),
@@ -18,6 +20,7 @@ def create_access_and_refresh_tokens(user_id: int, extra_claims: Optional[Dict[s
     }
     if extra_claims:
         payload_common.update(extra_claims)
+    
     access_payload = {
         **payload_common,
         "type": "access",
@@ -28,6 +31,7 @@ def create_access_and_refresh_tokens(user_id: int, extra_claims: Optional[Dict[s
         "type": "refresh",
         "exp": int((now + timedelta(days=7)).timestamp()),
     }
+    
     secret = _get_jwt_secret()
     access_token = jwt.encode(access_payload, secret, algorithm="HS256")
     refresh_token = jwt.encode(refresh_payload, secret, algorithm="HS256")
@@ -60,10 +64,30 @@ def require_auth(fn):
         payload = decode_token(token)
         if not payload or payload.get("type") != "access":
             return jsonify({"error": "Unauthorized"}), 401
-        g.current_user_id = int(payload.get("sub"))
+        g.current_user_id = str(payload.get("sub"))
         g.token_payload = payload
         return fn(*args, **kwargs)
 
     return wrapper
+
+
+def hash_password(password: str) -> str:
+    """Hash a password using werkzeug"""
+    return generate_password_hash(password)
+
+
+def verify_password(password: str, hashed_password: str) -> bool:
+    """Verify a password against its hash"""
+    return check_password_hash(hashed_password, password)
+
+
+def generate_verification_token() -> str:
+    """Generate a random verification token"""
+    return str(uuid.uuid4())
+
+
+def generate_reset_token() -> str:
+    """Generate a random password reset token"""
+    return str(uuid.uuid4())
 
 
