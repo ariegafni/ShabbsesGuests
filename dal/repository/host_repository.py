@@ -1,8 +1,6 @@
-
 from models.host import Host, HostResponse
 from utils.db import get_connection
 from datetime import datetime
-import json
 import uuid
 from typing import List
 

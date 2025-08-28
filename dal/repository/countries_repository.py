@@ -1,7 +1,8 @@
-from typing import Dict, List
+from typing import Dict, List, Any
 from datetime import datetime
-from db import get_connection
 from models.host import HostResponse
+from utils.db import get_connection
+
 
 class CountriesRepository:
     def ensure_exists(self, country_place_id: str) -> None:
@@ -21,7 +22,7 @@ class CountriesRepository:
         finally:
             conn.close()
 
-    def get_all(self) -> List[dict]:
+    def get_all(self) -> list[Any] | None:
         conn = get_connection()
         try:
             with conn.cursor() as cur:
@@ -38,12 +39,13 @@ class CountriesRepository:
                     if d.get("updated_at"):
                         d["updated_at"] = d["updated_at"].isoformat()
                     out.append(d)
-                return out
+                    return out
         finally:
             conn.close()
 
 
-    def get_top5_per_country(self) -> Dict[str, List[HostResponse]]:
+
+    def get_top5_hosts_per_country(self) -> Dict[str, List[HostResponse]]:
         conn = get_connection()
         try:
             with conn.cursor() as cur:

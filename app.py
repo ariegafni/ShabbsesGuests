@@ -1,9 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
-from routes.user_api import user_api
-from routes.host_api import host_api
 from routes.auth_api import auth_api
-
+from routes.host_api import host_api
+from routes.user_api import user_api
+from routes.country_api import country_api
 
 def create_app():
     app = Flask(__name__)
@@ -13,6 +13,7 @@ def create_app():
     app.register_blueprint(auth_api, url_prefix="/api")
     app.register_blueprint(user_api, url_prefix="/api")
     app.register_blueprint(host_api, url_prefix="/api")
+    app.register_blueprint(country_api, url_prefix="/api")
 
     return app
 

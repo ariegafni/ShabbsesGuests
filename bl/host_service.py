@@ -1,8 +1,7 @@
-
-from models.host import Host, HostResponse, CreateHostRequest, UpdateHostRequest, UploadPhotoResponse
-from dal.repository.host_repository import HostRepository
 from typing import List, Optional
 import requests
+from dal.repository.host_repository import HostRepository
+from models.host import CreateHostRequest, HostResponse, Host, UpdateHostRequest, UploadPhotoResponse
 
 
 class HostService:

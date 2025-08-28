@@ -1,8 +1,7 @@
-
 from flask import Blueprint, request, jsonify, g
-from models.user import UserResponse
 from bl.user_service import UserService
 from utils.auth import require_auth
+
 
 user_api = Blueprint('user_api', __name__)
 user_service = UserService()

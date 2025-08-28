@@ -1,4 +1,3 @@
-
 from models.user import User, UserResponse
 from utils.db import get_connection
 from datetime import datetime

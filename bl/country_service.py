@@ -1,6 +1,8 @@
 from typing import List, Dict, Any
+
 from dal.repository.countries_repository import CountriesRepository
 from dal.repository.host_repository import HostRepository
+
 
 class CountryService:
     def __init__(self, countries_repo: CountriesRepository | None = None, hosts_repo: HostRepository | None = None):
@@ -8,7 +10,7 @@ class CountryService:
         self.hosts_repo = hosts_repo or HostRepository()
 
     def get_top5_hosts_per_country(self) -> List[Dict[str, Any]]:
-        grouped = self.countries_repo.get_top5_per_country()
+        grouped = self.countries_repo.get_top5_hosts_per_country()
         return [
             {
                 "country_place_id": country,
