@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, g
-from bl.user_service import UserService
+from users.user_service import UserService
 from utils.auth import require_auth
 
 

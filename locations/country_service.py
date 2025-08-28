@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
-from dal.repository.countries_repository import CountriesRepository
-from dal.repository.host_repository import HostRepository
+from locations.countries_repository import CountriesRepository
+from hosts.host_repository import HostRepository
 
 class CountryService:
     def __init__(self, countries_repo: CountriesRepository | None = None, hosts_repo: HostRepository | None = None):

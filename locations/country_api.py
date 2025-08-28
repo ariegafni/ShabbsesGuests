@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from bl.country_service import CountryService
+from locations.country_service import CountryService
 
 country_api = Blueprint("country_api", __name__, url_prefix="/api/countries")
 

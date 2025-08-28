@@ -1,4 +1,4 @@
-from models.user import User, UserResponse
+from users.user_model import User, UserResponse
 from utils.db import get_connection
 from datetime import datetime
 import json

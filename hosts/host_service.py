@@ -1,7 +1,7 @@
 from typing import List, Optional
 import requests
-from dal.repository.host_repository import HostRepository
-from models.host import CreateHostRequest, HostResponse, Host, UpdateHostRequest, UploadPhotoResponse
+from hosts.host_repository import HostRepository
+from hosts.host_model import CreateHostRequest, HostResponse, Host, UpdateHostRequest, UploadPhotoResponse
 
 
 class HostService:

@@ -1,6 +1,6 @@
 from typing import Dict, List, Any
 from datetime import datetime
-from models.host import HostResponse
+from hosts.host_model import HostResponse
 from utils.db import get_connection
 
 

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 
-from bl.user_service import UserService
-from models.user import RegisterRequest, LoginRequest, RefreshRequest, ForgotPasswordRequest, ResetPasswordRequest, \
+from users.user_service import UserService
+from users.user_model import RegisterRequest, LoginRequest, RefreshRequest, ForgotPasswordRequest, ResetPasswordRequest, \
     VerifyEmailRequest
 from utils.auth import require_auth
 

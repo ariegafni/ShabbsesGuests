@@ -1,4 +1,4 @@
-from models.host import Host, HostResponse
+from hosts.host_model import Host, HostResponse
 from utils.db import get_connection
 from datetime import datetime
 import uuid

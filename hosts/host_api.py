@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, g
 
-from bl.host_service import HostService
-from models.host import CreateHostRequest, UpdateHostRequest
+from hosts.host_service import HostService
+from hosts.host_model import CreateHostRequest, UpdateHostRequest
 from utils.auth import require_auth
 
 host_api = Blueprint('host_api', __name__)
