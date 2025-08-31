@@ -1,4 +1,4 @@
-# utils/db.py
+# utils/postgres_db.py
 import psycopg2
 import os
 from dotenv import load_dotenv

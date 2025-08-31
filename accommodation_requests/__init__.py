@@ -1,0 +1,1 @@
+from accommodation_requests.accommodation_requests_api import accommodation_requests_api

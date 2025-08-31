@@ -1,5 +1,5 @@
 from users.user_model import User, UserResponse
-from utils.db import get_connection
+from storage.postgres_db import get_connection
 from datetime import datetime
 import json
 import uuid
@@ -25,7 +25,7 @@ class UserRepository:
         """, (
             user_id, user.first_name, user.last_name, user.email, user.password_hash,
             user.phone, user.country, user.city, user.profile_image, user.bio,
-            json.dumps([link.dict() for link in user.social_links]) if user.social_links else None,
+            json.dumps([link.model_dump() for link in user.social_links]) if user.social_links else None,
             user.is_verified, now, now
         ))
         
@@ -130,7 +130,7 @@ class UserRepository:
         
         # Handle social_links JSON serialization
         if 'social_links' in data and data['social_links']:
-            data['social_links'] = json.dumps([link.dict() if hasattr(link, 'dict') else link for link in data['social_links']])
+            data['social_links'] = json.dumps([link.model_dump() if hasattr(link, 'model_dump') else link for link in data['social_links']])
         
         set_clause = ", ".join([f"{key} = %s" for key in data.keys()])
         values = list(data.values()) + [user_id]
@@ -156,3 +156,15 @@ class UserRepository:
         cur.close()
         conn.close()
         return count > 0
+
+    def set_profile_image_url(self, user_id: str, url: str):
+        conn = get_connection()
+        cur = conn.cursor()
+        cur.execute("""
+               UPDATE users
+               SET profile_image = %s, updated_at = NOW()
+               WHERE id = %s;
+           """, (url, user_id))
+        conn.commit()
+        cur.close()
+        conn.close()

@@ -1,5 +1,5 @@
 from hosts.host_model import Host, HostResponse
-from utils.db import get_connection
+from storage.postgres_db import get_connection
 from datetime import datetime
 import uuid
 from typing import List

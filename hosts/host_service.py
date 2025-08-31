@@ -85,7 +85,7 @@ class HostService:
         
         # Convert to dict, removing None values
         update_data = {}
-        for field, value in data.dict().items():
+        for field, value in data.model_dump().items():
             if value is not None:
                 update_data[field] = value
         

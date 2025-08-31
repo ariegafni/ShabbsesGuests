@@ -16,7 +16,7 @@ def register():
         register_data = RegisterRequest(**data)
         
         auth_response = user_service.register_user(register_data)
-        return jsonify(auth_response.dict()), 201
+        return jsonify(auth_response.model_dump()), 201
         
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
@@ -31,7 +31,7 @@ def login():
         login_data = LoginRequest(**data)
         
         auth_response = user_service.login_user(login_data)
-        return jsonify(auth_response.dict())
+        return jsonify(auth_response.model_dump())
         
     except ValueError as e:
         return jsonify({"error": "Invalid credentials"}), 401
@@ -46,7 +46,7 @@ def refresh():
         refresh_data = RefreshRequest(**data)
         
         auth_response = user_service.refresh_tokens(refresh_data.refresh_token)
-        return jsonify(auth_response.dict())
+        return jsonify(auth_response.model_dump())
         
     except ValueError as e:
         return jsonify({"error": "Invalid refresh token"}), 401

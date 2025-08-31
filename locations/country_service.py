@@ -12,7 +12,7 @@ class CountryService:
         return [
             {
                 "country_place_id": country,
-                "hosts": [h.dict() for h in hosts]
+                "hosts": [h.model_dump() for h in hosts]
             }
             for country, hosts in grouped.items()
         ]
@@ -24,5 +24,5 @@ class CountryService:
 
     def get_hosts_by_country(self, country_place_id: str) -> List[Dict[str, Any]]:
         hosts = self.hosts_repo.get_by_country(country_place_id)
-        return [h.dict() for h in hosts]
+        return [h.model_dump() for h in hosts]
     
