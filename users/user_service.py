@@ -1,5 +1,5 @@
-from models.user import User, UserResponse, LoginRequest, RegisterRequest, AuthResponse
-from dal.repository.user_repository import UserRepository
+from users.user_model import User, UserResponse, LoginRequest, RegisterRequest, AuthResponse
+from users.user_repository import UserRepository
 from utils.auth import hash_password, verify_password, create_access_and_refresh_tokens
 from typing import Optional
 

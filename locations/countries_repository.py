@@ -1,7 +1,7 @@
 from typing import Dict, List, Any
 from datetime import datetime
-from models.host import HostResponse
-from utils.db import get_connection
+from hosts.host_model import HostResponse
+from storage.postgres_db import get_connection
 
 
 class CountriesRepository:

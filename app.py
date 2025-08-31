@@ -1,9 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
-from routes.auth_api import auth_api
-from routes.host_api import host_api
-from routes.user_api import user_api
-from routes.country_api import country_api
+from auth.auth_api import auth_api
+from hosts.host_api import host_api
+from users.user_api import user_api
+from locations.country_api import country_api
+from accommodation_requests.accommodation_requests_api import accommodation_requests_api
 
 def create_app():
     app = Flask(__name__)
@@ -14,6 +15,7 @@ def create_app():
     app.register_blueprint(user_api, url_prefix="/api")
     app.register_blueprint(host_api, url_prefix="/api")
     app.register_blueprint(country_api, url_prefix="/api")
+    app.register_blueprint(accommodation_requests_api, url_prefix="/api")
 
     return app
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, g
-from bl.user_service import UserService
+from users.user_service import UserService
 from utils.auth import require_auth
 
 
@@ -13,7 +13,7 @@ def get_my_profile():
     try:
         user = user_service.get_user_by_id(str(g.current_user_id))
         if user:
-            return jsonify(user.dict())
+            return jsonify(user.model_dump())
         else:
             return jsonify({"error": "User not found"}), 404
     except Exception as e:
@@ -31,7 +31,7 @@ def update_my_profile():
         data.pop('email', None)  # Email should be updated via separate endpoint
         
         user = user_service.update_user(str(g.current_user_id), data)
-        return jsonify(user.dict())
+        return jsonify(user.model_dump())
     except Exception as e:
         return jsonify({"error": "Failed to update user profile"}), 500
 
