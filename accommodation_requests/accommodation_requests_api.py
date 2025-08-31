@@ -10,7 +10,6 @@ from utils.auth import require_auth
 accommodation_requests_api = Blueprint('accommodation_requests_api', __name__)
 accommodation_requests_service = AccommodationRequestsService()
 
-
 @accommodation_requests_api.route("/hosting-requests", methods=["POST"])
 @require_auth
 def create_accommodation_request():
